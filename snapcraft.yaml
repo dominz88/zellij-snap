@@ -1,0 +1,28 @@
+name: zellij
+version: 0.36.0
+summary: A terminal workspace
+description: |
+  Zellij is a terminal workspace that aims to be a multi-purpose and flexible
+  terminal environment.
+confinement: classic
+base: core22
+
+architectures:
+  - build-on: [amd64]
+    build-for: [amd64]
+
+parts:
+  zellij:
+    source: https://github.com/zellij-org/zellij.git
+    source-tag: v0.36.0
+    plugin: rust
+
+  rust-deps:
+    plugin: nil
+    build-packages:
+      - rustc
+      - cargo
+
+apps:
+  zellij:
+    command: bin/zellij
