@@ -1,5 +1,5 @@
 name: zellij
-version: 0.37.0
+version: 0.37.1
 summary: A terminal workspace
 description: |
   Zellij is a terminal workspace that aims to be a multi-purpose and flexible
@@ -8,15 +8,13 @@ confinement: classic
 base: core22
 
 architectures:
-  - build-on: amd64
-    build-for: amd64
-  - build-on: arm64
-    build-for: arm64
-
+  - amd64
+  - arm64
+  
 parts:
   zellij:
     source: https://github.com/zellij-org/zellij.git
-    source-tag: v0.37.0
+    source-tag: v0.37.1
     plugin: rust
 
   rust-deps:
