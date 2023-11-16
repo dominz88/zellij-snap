@@ -1,5 +1,5 @@
 name: zellij
-version: 0.39.0
+version: 0.39.1
 summary: A terminal workspace
 description: |
   Zellij is a terminal workspace that aims to be a multi-purpose and flexible
@@ -16,7 +16,7 @@ architectures:
 parts:
   zellij:
     source: https://github.com/zellij-org/zellij.git
-    source-tag: v0.39.0
+    source-tag: v0.39.1
     plugin: rust
 
   rust-deps:
