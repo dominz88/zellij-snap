@@ -6,6 +6,9 @@ description: |
   terminal environment.
 confinement: classic
 base: core22
+website: https://zellij.dev
+source-code: https://github.com/dominz88/zellij-snap
+issues: https://github.com/zellij-org/zellij/issues
 
 architectures:
   - build-on: amd64
