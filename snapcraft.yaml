@@ -22,16 +22,6 @@ parts:
     source: https://github.com/zellij-org/zellij.git
     source-tag: v0.42.1
     plugin: rust
-    override-build: |
-      snapcraftctl build
-      ARCH=$(dpkg --print-architecture)
-      if [ "$ARCH" = "arm64" ]; then
-        patchelf --set-interpreter /snap/core22/current/lib/ld-linux-aarch64.so.1 bin/zellij
-        patchelf --set-rpath /snap/core22/current/lib/aarch64-linux-gnu bin/zellij
-      elif [ "$ARCH" = "amd64" ]; then
-        patchelf --set-interpreter /snap/core22/current/lib64/ld-linux-x86-64.so.2 bin/zellij
-        patchelf --set-rpath /snap/core22/current/lib/x86_64-linux-gnu bin/zellij
-      fi
 
   rust-deps:
     plugin: nil
