@@ -1,33 +1,27 @@
 name: zellij
-version: 0.42.2
+version: 0.43.0
 summary: A terminal workspace
 description: |
   Zellij is a terminal workspace that aims to be a multi-purpose and flexible
   terminal environment.
 confinement: classic
-base: core22
+base: core24
 website: https://zellij.dev
 issues: https://github.com/zellij-org/zellij/issues
 source-code: https://github.com/dominz88/zellij-snap
 contact: dominguez.lopez.luis.alonso@laposte.net
 
-architectures:
-  - build-on: amd64
-    build-for: amd64
-  - build-on: arm64
-    build-for: arm64
-  
+platforms:
+  amd64:
+  arm64:
+
 parts:
   zellij:
     source: https://github.com/zellij-org/zellij.git
-    source-tag: v0.42.2
+    source-tag: "v$SNAPCRAFT_PROJECT_VERSION"
     plugin: rust
-
-  rust-deps:
-    plugin: nil
-    build-packages:
-      - rustc
-      - cargo
+    build-attributes:
+      - enable-patchelf
 
 apps:
   zellij:
