@@ -20,6 +20,8 @@ parts:
     source: https://github.com/zellij-org/zellij.git
     source-tag: "v$SNAPCRAFT_PROJECT_VERSION"
     plugin: rust
+    build-attributes:
+      - enable-patchelf
 
 apps:
   zellij:
