@@ -1,0 +1,72 @@
+name: CI (Push)
+
+on:
+  push:
+    branches: ["main"]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  snap:
+    name: Build snap
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-24.04
+          - os: ubuntu-24.04-arm
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup LXD
+        uses: canonical/setup-lxd@v0.1.2
+
+      - name: Setup Snapcraft
+        run: sudo snap install --classic snapcraft
+
+      - name: Build snap
+        run: snapcraft --verbose
+
+      - name: Release snap
+        env:
+          SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.STORE_TOKEN }}
+        run: |
+          snapcraft upload zellij_*.snap --release latest/candidate
+
+  notify:
+    name: Call for testing
+    needs: [snap]
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Open promotion prompt
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          VERSION="$(yq '.version' snapcraft.yaml)"
+          gh issue create \
+            --title "Call for testing: zellij \`$VERSION\` on \`latest/candidate\`" \
+            --body "The \`zellij\` snap was updated automatically to version \`$VERSION\` and released to the \`latest/candidate\` channel, and now needs testing for promotion to \`latest/stable\`.
+
+          If you already have the snap installed, you can test the snap by running:
+
+              sudo snap refresh zellij --channel latest/candidate
+
+          Or you can install the snap with:
+
+              sudo snap install zellij --channel latest/candidate
+
+          As the maintainer of the snap, you can effect the promotion at the CLI with the command below, or by dispatching the [promotion workflow](https://github.com/dominz88/zellij-snap/actions/workflows/promote.yaml):
+
+              snapcraft promote zellij --from-channel latest/candidate --to-channel latest/stable --yes
+
+          "
