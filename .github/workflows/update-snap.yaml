@@ -27,7 +27,7 @@ jobs:
           LATEST=$(curl -sL https://api.github.com/repos/zellij-org/zellij/releases |
             jq .  | grep tag_name | head -n 1 | cut -d'"' -f4 | tr -d 'v'
           )
-          sed -i 's/^\(version: \).*$/\1'"$LATEST"'/' snap/snapcraft.yaml
+          sed -i 's/^\(version: \).*$/\1'"$LATEST"'/' snapcraft.yaml
           echo "version=$(LATEST)" >> $GITHUB_OUTPUT
 
       - name: Detect changes
